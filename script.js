@@ -1,77 +1,122 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Scroll functionality for game cards
     const scrollContainer = document.getElementById('gameScroll');
     const scrollLeftBtn = document.getElementById('scrollLeft');
     const scrollRightBtn = document.getElementById('scrollRight');
-    const gameCards = document.querySelectorAll('.game-card');
+    const gameCards = Array.from(document.querySelectorAll('.game-card'));
     
-    // Calculate card width including margin
-    const cardStyle = window.getComputedStyle(gameCards[0]);
-    const cardWidth = gameCards[0].offsetWidth + 
-                     parseInt(cardStyle.marginRight) + 
-                     parseInt(cardStyle.marginLeft);
+    // Calculate container center position
+    const container = scrollContainer;
+    const containerWidth = container.offsetWidth;
+    const containerCenter = containerWidth / 2;
     
-    // Update button states based on scroll position
+    // Function to center the card
+    function centerCard(card) {
+        const cardRect = card.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        
+        // Calculate scroll position to center the card
+        const scrollPosition = card.offsetLeft - (containerWidth - cardRect.width) / 2;
+        
+        container.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Find the currently centered card
+    function findCenteredCard() {
+        const containerRect = container.getBoundingClientRect();
+        const containerCenterX = containerRect.left + containerRect.width / 2;
+        
+        for (const card of gameCards) {
+            const cardRect = card.getBoundingClientRect();
+            const cardCenterX = cardRect.left + cardRect.width / 2;
+            
+            if (Math.abs(cardCenterX - containerCenterX) < 30) {
+                return card;
+            }
+        }
+        return null;
+    }
+    
+    // Scroll to previous card
+    function scrollToPrevious() {
+        const currentCard = findCenteredCard();
+        if (!currentCard) return;
+        
+        const currentIndex = gameCards.indexOf(currentCard);
+        if (currentIndex > 0) {
+            centerCard(gameCards[currentIndex - 1]);
+        }
+    }
+    
+    // Scroll to next card
+    function scrollToNext() {
+        const currentCard = findCenteredCard();
+        if (!currentCard) return;
+        
+        const currentIndex = gameCards.indexOf(currentCard);
+        if (currentIndex < gameCards.length - 1) {
+            centerCard(gameCards[currentIndex + 1]);
+        }
+    }
+    
+    // Update button states
     function updateButtonStates() {
-        scrollLeftBtn.disabled = scrollContainer.scrollLeft <= 10;
-        scrollRightBtn.disabled = scrollContainer.scrollLeft >= 
-            (scrollContainer.scrollWidth - scrollContainer.clientWidth - 10);
-    }
-    
-    // Scroll functions
-    function scrollLeft() {
-        scrollContainer.scrollBy({
-            left: -cardWidth,
-            behavior: 'smooth'
-        });
-    }
-    
-    function scrollRight() {
-        scrollContainer.scrollBy({
-            left: cardWidth,
-            behavior: 'smooth'
-        });
+        const currentCard = findCenteredCard();
+        if (!currentCard) return;
+        
+        const currentIndex = gameCards.indexOf(currentCard);
+        scrollLeftBtn.disabled = currentIndex === 0;
+        scrollRightBtn.disabled = currentIndex === gameCards.length - 1;
     }
     
     // Event listeners for buttons
-    scrollLeftBtn.addEventListener('click', scrollLeft);
-    scrollRightBtn.addEventListener('click', scrollRight);
+    scrollLeftBtn.addEventListener('click', scrollToPrevious);
+    scrollRightBtn.addEventListener('click', scrollToNext);
     
     // Keyboard navigation
     document.addEventListener('keydown', function(e) {
         if (e.key === 'ArrowLeft') {
-            scrollLeft();
+            scrollToPrevious();
         } else if (e.key === 'ArrowRight') {
-            scrollRight();
+            scrollToNext();
         }
     });
     
     // Update buttons on scroll
-    scrollContainer.addEventListener('scroll', updateButtonStates);
+    container.addEventListener('scroll', updateButtonStates);
     
-    // Initial check
-    updateButtonStates();
-    
-    // Touch/swipe support for mobile
+    // Touch/swipe support
     let touchStartX = 0;
     let touchEndX = 0;
     const swipeThreshold = 50;
     
-    scrollContainer.addEventListener('touchstart', (e) => {
+    container.addEventListener('touchstart', function(e) {
         touchStartX = e.touches[0].clientX;
-    }, {passive: true});
+    }, { passive: true });
     
-    scrollContainer.addEventListener('touchend', (e) => {
+    container.addEventListener('touchend', function(e) {
         touchEndX = e.changedTouches[0].clientX;
         handleSwipe();
-    }, {passive: true});
+    }, { passive: true });
     
     function handleSwipe() {
         const difference = touchStartX - touchEndX;
         if (difference > swipeThreshold) {
-            scrollRight();
+            scrollToNext();
         } else if (difference < -swipeThreshold) {
-            scrollLeft();
+            scrollToPrevious();
         }
+    }
+    
+    // Initialize
+    updateButtonStates();
+    
+    // Center first card on load
+    if (gameCards.length > 0) {
+        setTimeout(() => {
+            centerCard(gameCards[0]);
+        }, 100);
     }
 });

@@ -1,42 +1,58 @@
 /* Base Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #121212;
-    color: #fff;
+    color: #ffffff;
     margin: 0;
     padding: 0;
-    text-align: center;
+    line-height: 1.6;
 }
 
 .container {
-    width: 90%;
+    width: 95%;
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px 0;
+    margin: 20px auto;
+    padding: 20px;
     background: #1e1e1e;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(255, 165, 0, 0.5);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
-h1, h2, h3 {
+h1 {
     color: #ff6600;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+}
+
+h2 {
+    color: #ff8533;
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+h3 {
+    color: #ff8533;
+    margin-top: 0;
+    font-size: 1.4rem;
 }
 
 /* Scroll Section */
 .scroll-section {
-    margin: 30px 0;
+    margin: 40px 0;
     position: relative;
-    padding: 0 20px;
 }
 
 .scroll-container {
     display: flex;
     overflow-x: auto;
+    scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    gap: 20px;
-    padding: 20px 0;
+    gap: 25px;
+    padding: 25px 15px;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    position: relative;
 }
 
 .scroll-container::-webkit-scrollbar {
@@ -44,19 +60,26 @@ h1, h2, h3 {
 }
 
 .game-card {
-    flex: 0 0 280px;
+    flex: 0 0 300px;
+    scroll-snap-align: center;
     background: #252525;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(255, 165, 0, 0.2);
-    text-align: left;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(255, 102, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 102, 0, 0.3);
 }
 
 .scroll-controls {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    margin-top: 15px;
+    gap: 30px;
+    margin-top: 20px;
 }
 
 .scroll-btn {
@@ -64,139 +87,185 @@ h1, h2, h3 {
     color: white;
     border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .scroll-btn:hover {
     background: #ff8533;
     transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .scroll-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    transform: none;
 }
 
 /* Button Styles */
 .btn-container {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .btn-playstore {
     display: inline-block;
-    padding: 10px 15px;
+    padding: 12px 20px;
     background: #ff6600;
     color: white;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 8px;
     width: 80%;
-    max-width: 200px;
+    max-width: 220px;
     text-align: center;
     transition: all 0.3s ease;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-playstore:hover {
     background: #ff8533;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* App Card Styles */
 .app-card {
     background: #252525;
-    padding: 20px;
-    margin: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 5px rgba(255, 165, 0, 0.3);
+    padding: 25px;
+    margin: 30px 0;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(255, 102, 0, 0.2);
 }
 
 .app-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
+    gap: 25px;
+    margin-top: 25px;
 }
 
 .app-item {
-    flex: 1 1 200px;
-    min-width: 200px;
-    max-width: 250px;
+    flex: 1 1 250px;
+    min-width: 250px;
+    max-width: 280px;
     background: #333;
-    padding: 15px;
-    border-radius: 8px;
+    padding: 20px;
+    border-radius: 10px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .app-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(255, 165, 0, 0.2);
+    box-shadow: 0 10px 20px rgba(255, 102, 0, 0.3);
 }
 
 .app-icon {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 10px;
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 15px;
     background: #ff6600;
-    border-radius: 15px;
+    border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 28px;
     color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .app-name {
     font-weight: bold;
-    margin-bottom: 5px;
-    color: #ff6600;
+    margin-bottom: 10px;
+    color: #ff8533;
+    font-size: 1.2rem;
 }
 
 .app-desc {
-    font-size: 14px;
-    color: #aaa;
-    margin-bottom: 15px;
+    font-size: 15px;
+    color: #cccccc;
+    margin-bottom: 20px;
+    min-height: 40px;
 }
 
 .app-download {
     display: block;
-    padding: 8px 12px;
+    padding: 10px 15px;
     background: #ff6600;
     color: white;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 8px;
     text-align: center;
     transition: all 0.3s ease;
+    font-weight: bold;
 }
 
 .app-download:hover {
     background: #ff8533;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Info Card */
 .info-card {
     background: #252525;
-    padding: 20px;
-    margin: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 5px rgba(255, 165, 0, 0.3);
+    padding: 25px;
+    margin: 30px 0;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(255, 102, 0, 0.2);
 }
 
 /* List Styles */
 ul {
     text-align: left;
-    padding-left: 20px;
-    margin: 10px 0;
+    padding-left: 25px;
+    margin: 15px 0;
 }
 
 li {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+li::before {
+    content: "•";
+    color: #ff6600;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 15px;
+    }
+    
+    .game-card {
+        flex: 0 0 85%;
+    }
+    
+    .scroll-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+    
+    .app-item {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
 }
