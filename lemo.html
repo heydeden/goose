@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemo Recharge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 15px;
+            background-color: #fff;
+            min-height: 100vh;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+        }
+        
+        header {
+            background-color: #ffcc00;
+            padding: 18px;
+            text-align: center;
+            color: #333;
+            border-radius: 10px;
+            position: relative;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            font-size: 22px;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+        
+        .form-section {
+            padding: 20px 15px;
+            border-bottom: 1px solid #eee;
+            background-color: #ffffff;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .form-title {
+            font-size: 18px;
+            font-weight: bold; 
+            margin-bottom: 15px;
+            color: #333;
+            position: relative;
+            padding-left: 10px;
+        }
+        
+        .form-title:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 5px;
+            height: 16px;
+            width: 4px;
+            background-color: #ffcc00;
+            border-radius: 2px;
+        }
+        
+        .amount-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .amount-option {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 12px 10px;
+            text-align: center;
+            flex: 1 0 30%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .amount-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .amount-option.selected {
+            background-color: #fff8e6;
+            border-color: #ffcc00;
+            box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.3), 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .amount-option.selected:before {
+            content: "✓";
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            background-color: #ffcc00;
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            line-height: 20px;
+            text-align: center;
+            border-radius: 0 12px 0 12px;
+        }
+        
+        .amount-value {
+            font-weight: bold;
+            font-size: 16px;
+            display: block;
+        }
+        
+        .amount-price {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .amount-bonus {
+            color: #ff6b00;
+            font-size: 12px;
+            display: block;
+            margin-top: 3px;
+            font-weight: bold;
+        }
+        
+        .user-id-input {
+            margin-bottom: 10px;
+        }
+        
+        .user-id-input input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .user-id-input input:focus {
+            border-color: #ffcc00;
+        }
+        
+        .custom-amount {
+            margin-top: 15px;
+        }
+        
+        .custom-amount input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .custom-amount input:focus {
+            border-color: #ffcc00;
+        }
+        
+        .payment-section {
+            padding: 20px 15px;
+        }
+        
+        .payment-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 18px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        
+        .payment-option.selected {
+            border-color: #ffcc00;
+            background-color: #fff8e6;
+            box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.3), 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .payment-logo {
+            width: 60px;
+            height: 40px;
+            object-fit: contain;
+            margin-right: 15px;
+        }
+        
+        .payment-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .qr-section {
+            padding: 25px 15px;
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .qr-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .qr-instructions {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            max-width: 280px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+        
+        .qr-code {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 20px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            background-color: white;
+            position: relative;
+        }
+        
+        .qr-code:before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px dashed #ffcc00;
+            border-radius: 16px;
+            z-index: -1;
+        }
+        
+        .qr-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+        
+        .qr-expire {
+            font-size: 14px;
+            color: #ff3b30;
+            margin-bottom: 20px;
+        }
+        
+        .confirm-button {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .confirm-button:hover {
+            background-color: #1ea355;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4);
+        }
+        
+        .confirm-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(37, 211, 102, 0.4);
+        }
+        
+        .confirm-button:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transition: all 0.6s ease;
+        }
+        
+        .confirm-button:hover:before {
+            left: 100%;
+        }
+        
+        .whatsapp-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        #confirm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 90%;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .modal-message {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .modal-button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-cancel {
+            background-color: #f5f5f5;
+            color: #666;
+        }
+        
+        .modal-cancel:hover {
+            background-color: #e5e5e5;
+        }
+        
+        .modal-confirm {
+            background-color: #25D366;
+            color: white;
+        }
+        
+        .modal-confirm:hover {
+            background-color: #1ea355;
+        }
+        
+        .footer {
+            padding: 20px 15px;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="#" class="back-button">←</a>
+            <h1>Recharge Lemo</h1>
+        </header>
+        
+        <section class="form-section">
+            <div class="form-title">ID Akun Lemo</div>
+            <div class="user-id-input">
+                <input type="text" placeholder="Masukkan ID Akun Lemo Anda" id="lemoId">
+            </div>
+        </section>
+        
+        <section class="form-section">
+            <div class="form-title">Pilih Nominal</div>
+            <div class="amount-options">
+                <div class="amount-option" onclick="selectAmount(this, 300000)">
+                    <span class="amount-value">2000</span>
+                    <span class="amount-price">Rp.300k</span>
+                    <span class="amount-bonus">+88 Bonus</span>
+                </div>
+                <div class="amount-option" onclick="selectAmount(this, 420000)">
+                    <span class="amount-value">3000</span>
+                    <span class="amount-price">Rp.420k</span>
+                    <span class="amount-bonus">+432 Bonus</span>
+                </div>
+                <div class="amount-option" onclick="selectAmount(this, 750000)">
+                    <span class="amount-value">5000</span>
+                    <span class="amount-price">Rp.750k</span>
+                    <span class="amount-bonus">+890 Bonus</span>
+                </div>
+                <div class="amount-option" onclick="selectAmount(this, 970000)">
+                    <span class="amount-value">7000</span>
+                    <span class="amount-price">Rp.970k</span>
+                    <span class="amount-bonus">+1087 Bonus</span>
+                </div>
+                <div class="amount-option" onclick="selectAmount(this, 1400000)">
+                    <span class="amount-value">10000</span>
+                    <span class="amount-price">Rp.1400k</span>
+                    <span class="amount-bonus">+1547 Bonus</span>
+                </div>
+                <div class="amount-option" onclick="selectAmount(this, 1900000)">
+                    <span class="amount-value">15000</span>
+                    <span class="amount-price">Rp.1900k</span>
+                    <span class="amount-bonus">+2793 Bonus</span>
+                </div>
+            </div>
+            <div class="custom-amount">
+                <input type="number" placeholder="Atau masukkan nominal lain (min. Rp10.000)" onchange="setCustomAmount(this.value)">
+            </div>
+        </section>
+        
+        <section class="payment-section">
+            <div class="payment-title">Metode Pembayaran</div>
+            <div class="payment-option selected">
+                <img src="https://raw.githubusercontent.com/heydeden/goose/refs/heads/main/dana.png" alt="DANA Logo" class="payment-logo">
+                <div class="payment-name">DANA</div>
+            </div>
+        </section>
+        
+        <section class="qr-section">
+            <div class="qr-title">Scan QR Code DANA</div>
+            <div class="qr-instructions">
+                Buka aplikasi DANA Anda, scan QR code berikut untuk melakukan pembayaran.
+            </div>
+            <div class="qr-code">
+                <img src="https://raw.githubusercontent.com/heydeden/goose/refs/heads/main/qr.jpg" alt="QR Code Pembayaran DANA" class="qr-image">
+            </div>
+            <div class="qr-expire">QR Code akan kedaluwarsa dalam <span id="countdown">15:00</span></div>
+            <button class="confirm-button" onclick="showConfirmModal()">
+                <svg class="whatsapp-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                    <path d="M17.6 6.2C16.8 5.4 15.9 4.7 14.9 4.3C13.9 3.9 12.9 3.7 11.8 3.7C10.1 3.7 8.5 4.2 7.1 5.0C5.7 5.9 4.6 7.1 3.8 8.6C3.1 10.1 2.7 11.8 2.7 13.7C2.7 15.8 3.3 17.8 4.5 19.5L2.6 25.6L8.9 23.8C10.6 24.9 12.5 25.4 14.5 25.4H14.5C16.2 25.4 17.8 24.9 19.2 24.1C20.6 23.2 21.7 22.0 22.5 20.5C23.3 19.0 23.7 17.3 23.7 15.4C23.7 14.3 23.5 13.3 23.1 12.3C22.7 11.3 22.1 10.4 21.4 9.6L17.6 6.2ZM11.8 23.2C10.0 23.2 8.3 22.7 6.8 21.7L6.5 21.5L2.8 22.6L3.9 19.0L3.7 18.7C2.6 17.1 2.0 15.3 2.0 13.4C2.0 9.8 3.5 6.7 6.3 4.6C9.1 2.5 12.8 1.9 16.0 3.0C19.3 4.1 21.7 6.8 22.4 10.2C23.1 13.6 21.9 17.0 19.3 19.4C16.6 21.9 13.0 23.2 11.8 23.2ZM18.4 16.6C18.1 16.5 16.7 15.8 16.4 15.7C16.2 15.7 16.0 15.6 15.8 15.8C15.6 16.1 15.1 16.7 14.9 16.9C14.8 17.1 14.6 17.1 14.3 17.0C12.8 16.2 11.8 15.6 10.8 13.8C10.5 13.3 11.0 13.3 11.4 12.5C11.5 12.3 11.4 12.2 11.4 12.0C11.3 11.8 10.8 10.4 10.6 9.8C10.3 9.2 10.1 9.3 9.9 9.3C9.7 9.3 9.5 9.3 9.4 9.3C9.2 9.3 8.9 9.4 8.7 9.6C8.4 9.9 7.7 10.6 7.7 12.0C7.7 13.4 8.7 14.7 8.8 14.9C9.0 15.1 10.8 17.9 13.6 19.0C15.8 19.9 16.5 19.7 17.3 19.6C17.8 19.5 19.0 18.9 19.2 18.2C19.5 17.5 19.5 16.9 19.4 16.8C19.3 16.7 19.1 16.7 18.8 16.6H18.4Z"/>
+                </svg>
+                Konfirmasi Pembayaran via WhatsApp
+            </button>
+            
+            <div id="confirm-modal">
+                <div class="modal-content">
+                    <div class="modal-title">Konfirmasi Pembayaran</div>
+                    <div class="modal-message">
+                        Apakah Anda telah melakukan pembayaran dan ingin mengirimkan bukti pembayaran melalui WhatsApp?
+                    </div>
+                    <div class="modal-buttons">
+                        <button class="modal-button modal-cancel" onclick="hideConfirmModal()">Batal</button>
+                        <button class="modal-button modal-confirm" onclick="confirmPayment()">Ya, Kirim</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="footer">
+            &copy; 2025 Lemo. All rights reserved.
+        </footer>
+    </div>
+
+    <script>
+        let selectedAmount = 0;
+        let countdownInterval;
+        
+        function startCountdown() {
+            let minutes = 15;
+            let seconds = 0;
+            
+            countdownInterval = setInterval(function() {
+                if (seconds === 0) {
+                    if (minutes === 0) {
+                        clearInterval(countdownInterval);
+                        document.getElementById('countdown').innerHTML = "Waktu habis";
+                        return;
+                    }
+                    minutes--;
+                    seconds = 59;
+                } else {
+                    seconds--;
+                }
+                
+                let displayMinutes = minutes < 10 ? "0" + minutes : minutes;
+                let displaySeconds = seconds < 10 ? "0" + seconds : seconds;
+                
+                document.getElementById('countdown').innerHTML = displayMinutes + ":" + displaySeconds;
+            }, 1000);
+        }
+        
+        function selectAmount(element, amount) {
+            // Remove selected class from all options
+            document.querySelectorAll('.amount-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+            
+            // Set selected amount
+            selectedAmount = amount;
+            
+            // Update QR code (in a real app, this would generate a new QR)
+            console.log("Selected amount: Rp" + amount);
+        }
+        
+        function setCustomAmount(amount) {
+            // Remove selected class from all preset options
+            document.querySelectorAll('.amount-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Set custom amount
+            selectedAmount = parseInt(amount);
+            
+            // Update QR code (in a real app, this would generate a new QR)
+            console.log("Custom amount set: Rp" + amount);
+        }
+        
+        function showConfirmModal() {
+            // Get Lemo ID
+            const lemoId = document.getElementById('lemoId').value;
+            
+            if (!lemoId) {
+                alert("Silakan masukkan ID Akun Lemo Anda terlebih dahulu");
+                return;
+            }
+            
+            if (!selectedAmount || selectedAmount < 10000) {
+                alert("Silakan pilih nominal atau masukkan nominal minimal Rp10.000");
+                return;
+            }
+            
+            // Show modal
+            document.getElementById('confirm-modal').style.display = 'flex';
+        }
+        
+        function hideConfirmModal() {
+            document.getElementById('confirm-modal').style.display = 'none';
+        }
+        
+        function confirmPayment() {
+            // Get Lemo ID
+            const lemoId = document.getElementById('lemoId').value;
+            
+            // Hide modal
+            hideConfirmModal();
+    
+            // In a real application, this would open WhatsApp with a pre-filled message
+            const phoneNumber = "628979803247"; // Replace with your actual WhatsApp number
+            const amount = selectedAmount.toLocaleString('id-ID');
+            const message = `Halo, saya sudah melakukan pembayaran sebesar Rp${amount} untuk recharge Lemo dengan ID Akun: ${lemoId}. Berikut saya lampirkan bukti pembayarannya.`;
+            
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            // Open WhatsApp in new tab/window
+            window.open(whatsappURL, '_blank');
+        }
+        
+        // Start countdown when page loads
+        window.onload = function() {
+            startCountdown();
+        };
+    </script>
+</body>
+</html>
