@@ -1,1 +1,1 @@
-KQhjBB4GC0UaER0MPwwCF1lYXFpuGygXFw0SQ1tDPQZtARcNHlBcExYgH0RQSnM=
+gg.alert("goose")
